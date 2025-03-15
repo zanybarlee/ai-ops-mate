@@ -1,31 +1,47 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
-import { Message } from '@/types/chat';
-import { queryChatbot } from '@/utils/chatApi';
+import { Message, serializeMessage, deserializeMessage } from '@/types/chat';
+import { 
+  queryChatbot, 
+  saveMessagesToStorage, 
+  loadMessagesFromStorage, 
+  clearMessagesFromStorage 
+} from '@/utils/chatApi';
 import ChatHeader from './chat/ChatHeader';
 import MessageList from './chat/MessageList';
 import ChatInput from './chat/ChatInput';
 
+const DEFAULT_WELCOME_MESSAGE: Message = {
+  id: '1',
+  role: 'assistant',
+  content: 'Hello, I\'m your AI Operations Assistant. How can I help with your data center management today?',
+  timestamp: new Date()
+};
+
 const ChatInterface = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      role: 'assistant',
-      content: 'Hello, I\'m your AI Operations Assistant. How can I help with your data center management today?',
-      timestamp: new Date()
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([DEFAULT_WELCOME_MESSAGE]);
   const [isTyping, setIsTyping] = useState(false);
   const { toast } = useToast();
 
+  // Load saved messages from localStorage on component mount
+  useEffect(() => {
+    const savedMessages = loadMessagesFromStorage();
+    if (savedMessages && savedMessages.length > 0) {
+      setMessages(savedMessages.map(deserializeMessage));
+    }
+  }, []);
+
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    if (messages.length > 0) {
+      saveMessagesToStorage(messages.map(serializeMessage));
+    }
+  }, [messages]);
+
   const resetConversation = () => {
-    setMessages([{
-      id: '1',
-      role: 'assistant',
-      content: 'Hello, I\'m your AI Operations Assistant. How can I help with your data center management today?',
-      timestamp: new Date()
-    }]);
+    setMessages([DEFAULT_WELCOME_MESSAGE]);
+    clearMessagesFromStorage();
     toast({
       title: "Conversation Reset",
       description: "Your conversation has been reset.",

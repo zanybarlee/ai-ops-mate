@@ -23,3 +23,35 @@ export async function queryChatbot(question: string) {
     return "Sorry, there was an error connecting to the AI service. Please try again later.";
   }
 }
+
+// Local storage key for saving chat messages
+export const CHAT_STORAGE_KEY = 'ai-ops-assistant-chat';
+
+// Save chat messages to localStorage
+export const saveMessagesToStorage = (messages: any[]): void => {
+  try {
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
+  } catch (error) {
+    console.error('Failed to save chat messages to localStorage:', error);
+  }
+};
+
+// Load chat messages from localStorage
+export const loadMessagesFromStorage = (): any[] | null => {
+  try {
+    const savedMessages = localStorage.getItem(CHAT_STORAGE_KEY);
+    return savedMessages ? JSON.parse(savedMessages) : null;
+  } catch (error) {
+    console.error('Failed to load chat messages from localStorage:', error);
+    return null;
+  }
+};
+
+// Clear chat messages from localStorage
+export const clearMessagesFromStorage = (): void => {
+  try {
+    localStorage.removeItem(CHAT_STORAGE_KEY);
+  } catch (error) {
+    console.error('Failed to clear chat messages from localStorage:', error);
+  }
+};

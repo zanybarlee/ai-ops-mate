@@ -1,5 +1,5 @@
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ChatInterface from '@/components/ChatInterface';
@@ -8,6 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Bot, Lightbulb, FileText } from 'lucide-react';
 
 const Chat = () => {
+  const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -19,6 +21,10 @@ const Chat = () => {
     "Compare current server performance with last month's baseline metrics",
     "What are the warning signs of cooling system failure based on historical incidents?"
   ];
+
+  const handleSelectPrompt = (prompt: string) => {
+    setSelectedPrompt(prompt);
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -34,7 +40,7 @@ const Chat = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <ChatInterface />
+            <ChatInterface selectedPrompt={selectedPrompt} />
           </div>
           
           <div className="space-y-6">
@@ -51,6 +57,7 @@ const Chat = () => {
                     <div 
                       key={index}
                       className="p-2 text-sm hover:bg-secondary/50 rounded cursor-pointer transition-colors"
+                      onClick={() => handleSelectPrompt(prompt)}
                     >
                       {prompt}
                     </div>

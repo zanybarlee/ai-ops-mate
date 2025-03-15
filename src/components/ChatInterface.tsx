@@ -19,7 +19,11 @@ const DEFAULT_WELCOME_MESSAGE: Message = {
   timestamp: new Date()
 };
 
-const ChatInterface = () => {
+interface ChatInterfaceProps {
+  selectedPrompt?: string | null;
+}
+
+const ChatInterface = ({ selectedPrompt }: ChatInterfaceProps) => {
   const [messages, setMessages] = useState<Message[]>([DEFAULT_WELCOME_MESSAGE]);
   const [isTyping, setIsTyping] = useState(false);
   const { toast } = useToast();
@@ -38,6 +42,13 @@ const ChatInterface = () => {
       saveMessagesToStorage(messages.map(serializeMessage));
     }
   }, [messages]);
+
+  // Handle selected prompt from parent component
+  useEffect(() => {
+    if (selectedPrompt) {
+      handleSendMessage(selectedPrompt);
+    }
+  }, [selectedPrompt]);
 
   const resetConversation = () => {
     setMessages([DEFAULT_WELCOME_MESSAGE]);

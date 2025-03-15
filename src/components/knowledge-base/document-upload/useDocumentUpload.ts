@@ -53,7 +53,7 @@ export const useDocumentUpload = () => {
 
       // Make the actual API call
       const response = await fetch(
-        "http://localhost:3000/api/v1/document-store/upsert/f9030202-4140-4d97-b5de-c20d82783d28",
+        "http://localhost:3001/api/v1/document-store/upsert/f9030202-4140-4d97-b5de-c20d82783d28",
         {
           method: "POST",
           headers: {

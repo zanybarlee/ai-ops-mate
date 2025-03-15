@@ -1,2 +1,19 @@
 
-export { default as KnowledgeBase } from './KnowledgeBase';
+import KnowledgeBase from './KnowledgeBase';
+import DocumentUpload from './DocumentUpload';
+import ArticlesList from './ArticlesList';
+import CategorySidebar from './CategorySidebar';
+import RecentUpdates from './RecentUpdates';
+import SearchBar from './SearchBar';
+import { Article, Category } from './types';
+
+export {
+  KnowledgeBase,
+  DocumentUpload,
+  ArticlesList,
+  CategorySidebar,
+  RecentUpdates,
+  SearchBar,
+  type Article,
+  type Category
+};

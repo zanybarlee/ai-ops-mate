@@ -4,6 +4,7 @@ import SearchBar from './SearchBar';
 import ArticlesList from './ArticlesList';
 import CategorySidebar from './CategorySidebar';
 import RecentUpdates from './RecentUpdates';
+import DocumentUpload from './DocumentUpload';
 import { articles as mockArticles } from './mockData';
 
 const KnowledgeBase = () => {
@@ -47,6 +48,7 @@ const KnowledgeBase = () => {
         </div>
         
         <div>
+          <DocumentUpload />
           <CategorySidebar />
           <RecentUpdates articles={mockArticles.slice(0, 3)} />
         </div>

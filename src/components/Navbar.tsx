@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
+import AuthButton from './AuthButton';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -66,7 +67,7 @@ const Navbar = () => {
         </ul>
 
         <div className="hidden md:block">
-          <Button className="button-animation">Get Started</Button>
+          <AuthButton />
         </div>
 
         {/* Mobile menu toggle */}
@@ -97,7 +98,7 @@ const Navbar = () => {
               </li>
             ))}
             <li className="pt-2">
-              <Button className="w-full button-animation">Get Started</Button>
+              <AuthButton />
             </li>
           </ul>
         </div>

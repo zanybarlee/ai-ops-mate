@@ -68,7 +68,7 @@ const DocumentUpload = () => {
     setIsUploading(true);
 
     try {
-      // This is a mock implementation - in a real app, replace with actual API endpoint
+      // Create form data for API request
       const formData = new FormData();
       formData.append('files', file);
       
@@ -81,24 +81,24 @@ const DocumentUpload = () => {
       formData.append('replaceExisting', String(values.replaceExisting));
       formData.append('createNewDocStore', String(values.createNewDocStore));
 
-      // Mock API call - replace with your actual implementation
-      // const response = await fetch(
-      //   "http://localhost:3000/api/v1/document-store/upsert/f9030202-4140-4d97-b5de-c20d82783d28",
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       "Authorization": "Bearer YOUR_API_KEY_HERE"
-      //     },
-      //     body: formData
-      //   }
-      // );
+      // Make the actual API call
+      const response = await fetch(
+        "http://localhost:3000/api/v1/document-store/upsert/f9030202-4140-4d97-b5de-c20d82783d28",
+        {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer TLraxS5rm4nFBcYhYfpFM4a63UzicoAu3ccje2txI3M"
+          },
+          body: formData
+        }
+      );
       
-      // if (!response.ok) {
-      //   throw new Error('Upload failed');
-      // }
+      if (!response.ok) {
+        throw new Error(`Upload failed with status: ${response.status}`);
+      }
       
-      // Simulate API response
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const result = await response.json();
+      console.log('Upload result:', result);
       
       toast({
         title: 'Document uploaded',
@@ -113,7 +113,7 @@ const DocumentUpload = () => {
       console.error('Upload error:', error);
       toast({
         title: 'Upload failed',
-        description: 'There was an error uploading your document.',
+        description: 'There was an error uploading your document. Please check the console for details.',
         variant: 'destructive',
       });
     } finally {

@@ -4,7 +4,7 @@ import SearchBar from './SearchBar';
 import ArticlesList from './ArticlesList';
 import CategorySidebar from './CategorySidebar';
 import RecentUpdates from './RecentUpdates';
-import DocumentUpload from './DocumentUpload';
+import DocumentUpload from './document-upload';  // Updated import path
 import { articles as mockArticles } from './mockData';
 
 const KnowledgeBase = () => {

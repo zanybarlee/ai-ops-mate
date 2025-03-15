@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -119,9 +120,11 @@ const ChatInterface = () => {
   const renderMessageContent = (message: Message) => {
     if (message.role === 'assistant') {
       return (
-        <ReactMarkdown className="prose prose-sm dark:prose-invert max-w-none">
-          {message.content}
-        </ReactMarkdown>
+        <div className="prose prose-sm dark:prose-invert max-w-none">
+          <ReactMarkdown>
+            {message.content}
+          </ReactMarkdown>
+        </div>
       );
     }
     return <p className="text-sm">{message.content}</p>;

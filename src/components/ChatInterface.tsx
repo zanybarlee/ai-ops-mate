@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Send, Bot, User, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/components/ui/use-toast';
 
 interface Message {
   id: string;
@@ -13,19 +14,29 @@ interface Message {
   timestamp: Date;
 }
 
-const mockResponses = [
-  "I've analyzed the server logs and detected an anomaly in the cooling system. The temperature readings from Rack B3 show a 7°C increase over the last hour, which exceeds normal operational parameters.",
-  
-  "Based on historical incident data, this pattern matches 3 previous cases where the primary cooling pump was beginning to fail. I recommend checking the coolant pressure and flow rates immediately.",
-  
-  "I've generated a diagnostic checklist for the team and scheduled a maintenance alert. Would you like me to prepare a detailed report with the relevant troubleshooting steps from our knowledge base?",
-  
-  "The system is now monitoring this incident. I've retrieved similar cases from our knowledge base that showed early warning signs of cooling system failure. This information has been added to your maintenance dashboard."
-];
-
-function getRandomResponse(): string {
-  const index = Math.floor(Math.random() * mockResponses.length);
-  return mockResponses[index];
+async function queryChatbot(question: string) {
+  try {
+    const response = await fetch(
+      "http://127.0.0.1:3001/api/v1/prediction/0794a211-607d-44b7-a89a-150c09a50094",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ question })
+      }
+    );
+    
+    if (!response.ok) {
+      throw new Error(`API request failed with status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    return result.text || "Sorry, I couldn't process your request.";
+  } catch (error) {
+    console.error("Error querying chatbot:", error);
+    return "Sorry, there was an error connecting to the AI service. Please try again later.";
+  }
 }
 
 const ChatInterface = () => {
@@ -40,6 +51,7 @@ const ChatInterface = () => {
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
     scrollToBottom();
@@ -54,7 +66,20 @@ const ChatInterface = () => {
     }
   };
 
-  const handleSendMessage = () => {
+  const resetConversation = () => {
+    setMessages([{
+      id: '1',
+      role: 'assistant',
+      content: 'Hello, I\'m your AI Operations Assistant. How can I help with your data center management today?',
+      timestamp: new Date()
+    }]);
+    toast({
+      title: "Conversation Reset",
+      description: "Your conversation has been reset.",
+    });
+  };
+
+  const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
     
     // Add user message
@@ -69,18 +94,28 @@ const ChatInterface = () => {
     setInputValue('');
     setIsTyping(true);
     
-    // Simulate AI response after delay
-    setTimeout(() => {
+    try {
+      // Get real response from the API
+      const responseText = await queryChatbot(inputValue);
+      
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: getRandomResponse(),
+        content: responseText,
         timestamp: new Date()
       };
       
       setMessages((prev) => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error("Error getting assistant response:", error);
+      toast({
+        title: "Connection Error",
+        description: "Failed to connect to the AI service. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -95,7 +130,12 @@ const ChatInterface = () => {
             <p className="text-xs text-foreground/60">Data Center Support</p>
           </div>
         </div>
-        <Button variant="ghost" size="icon" aria-label="Reset conversation">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          aria-label="Reset conversation"
+          onClick={resetConversation}
+        >
           <RefreshCw size={16} />
         </Button>
       </div>

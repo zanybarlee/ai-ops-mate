@@ -1,6 +1,6 @@
 
 import KnowledgeBase from './KnowledgeBase';
-import DocumentUpload from './DocumentUpload';
+import DocumentUpload from './document-upload';
 import ArticlesList from './ArticlesList';
 import CategorySidebar from './CategorySidebar';
 import RecentUpdates from './RecentUpdates';

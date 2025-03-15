@@ -1,13 +1,19 @@
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import IncidentDashboard from '@/components/IncidentDashboard';
+import SuccessMetrics from '@/components/SuccessMetrics';
+import KnowledgeBase from '@/components/KnowledgeBase';
+import ChatInterface from '@/components/ChatInterface';
 import { useAuth } from '@/contexts/AuthContext';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Shield } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Dashboard = () => {
+  const [activeTab, setActiveTab] = useState('incidents');
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -37,7 +43,33 @@ const Dashboard = () => {
               <h1 className="text-3xl font-bold">Welcome, {user?.name}</h1>
               <p className="text-muted-foreground mt-2">You're signed in as a {user?.role.replace('_', ' ')}.</p>
             </div>
-            <IncidentDashboard />
+            
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+              <TabsList className="mb-2">
+                <TabsTrigger value="incidents">Incidents</TabsTrigger>
+                <TabsTrigger value="metrics">KPI Metrics</TabsTrigger>
+                <TabsTrigger value="knowledge">Knowledge Base</TabsTrigger>
+                <TabsTrigger value="assistant">AI Assistant</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="incidents" className="animate-fade-in">
+                <IncidentDashboard />
+              </TabsContent>
+              
+              <TabsContent value="metrics" className="animate-fade-in">
+                <SuccessMetrics />
+              </TabsContent>
+              
+              <TabsContent value="knowledge" className="animate-fade-in">
+                <KnowledgeBase />
+              </TabsContent>
+              
+              <TabsContent value="assistant" className="animate-fade-in">
+                <div className="max-w-3xl mx-auto">
+                  <ChatInterface />
+                </div>
+              </TabsContent>
+            </Tabs>
           </>
         )}
       </main>

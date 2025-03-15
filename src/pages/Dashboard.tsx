@@ -32,7 +32,13 @@ const Dashboard = () => {
             </Alert>
           </div>
         ) : (
-          <IncidentDashboard />
+          <>
+            <div className="mb-6">
+              <h1 className="text-3xl font-bold">Welcome, {user?.name}</h1>
+              <p className="text-muted-foreground mt-2">You're signed in as a {user?.role.replace('_', ' ')}.</p>
+            </div>
+            <IncidentDashboard />
+          </>
         )}
       </main>
       

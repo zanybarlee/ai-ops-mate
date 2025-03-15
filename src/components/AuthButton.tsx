@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { useAuth, UserData, UserAvatar } from '@/contexts/AuthContext';
+import { useAuth, UserData, UserAvatar, getRoleDisplayName, getRoleIcon } from '@/contexts/AuthContext';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogIn, LogOut, User } from 'lucide-react';
+import { LogIn, LogOut } from 'lucide-react';
 import UserRoleBadge from './UserRoleBadge';
 
 const AuthButton = () => {
@@ -53,24 +53,26 @@ const AuthButton = () => {
               <span>Sign In</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuContent align="end" className="w-64">
             <DropdownMenuLabel>Choose a role</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {availableUsers.map((mockUser: UserData) => (
-              <DropdownMenuItem
-                key={mockUser.id}
-                onClick={() => {
-                  login(mockUser.id);
-                }}
-                className="cursor-pointer flex items-center gap-2"
-              >
-                <UserAvatar user={mockUser} />
-                <div className="flex flex-col">
-                  <span className="text-sm">{mockUser.name}</span>
-                  <UserRoleBadge role={mockUser.role} className="mt-1 self-start" />
-                </div>
-              </DropdownMenuItem>
-            ))}
+            <div className="max-h-[300px] overflow-y-auto">
+              {availableUsers.map((mockUser: UserData) => (
+                <DropdownMenuItem
+                  key={mockUser.id}
+                  onClick={() => {
+                    login(mockUser.id);
+                  }}
+                  className="cursor-pointer flex items-center gap-2"
+                >
+                  <UserAvatar user={mockUser} />
+                  <div className="flex flex-col">
+                    <span className="text-sm">{mockUser.name}</span>
+                    <UserRoleBadge role={mockUser.role} className="mt-1 self-start" />
+                  </div>
+                </DropdownMenuItem>
+              ))}
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
       )}

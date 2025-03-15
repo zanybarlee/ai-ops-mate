@@ -1,10 +1,10 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { User } from 'lucide-react';
+import { User, HardHat, Headset, BookText, AlertTriangle } from 'lucide-react';
 
 // Define user roles
-export type UserRole = 'admin' | 'engineer' | 'support' | 'viewer';
+export type UserRole = 'admin' | 'engineer' | 'support' | 'viewer' | 'technician' | 'tech_support' | 'system_admin' | 'maintenance_manager';
 
 // Define user interface
 export interface UserData {
@@ -44,6 +44,34 @@ const MOCK_USERS: UserData[] = [
     email: 'viewer@aiops.com',
     role: 'viewer',
     avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=viewer'
+  },
+  {
+    id: '5',
+    name: 'Data Center Technician',
+    email: 'technician@aiops.com',
+    role: 'technician',
+    avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=technician'
+  },
+  {
+    id: '6',
+    name: 'Tech Support Staff',
+    email: 'techsupport@aiops.com',
+    role: 'tech_support',
+    avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=techsupport'
+  },
+  {
+    id: '7',
+    name: 'System Administrator',
+    email: 'sysadmin@aiops.com',
+    role: 'system_admin',
+    avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=sysadmin'
+  },
+  {
+    id: '8',
+    name: 'Maintenance Manager',
+    email: 'maintenance@aiops.com',
+    role: 'maintenance_manager',
+    avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=maintenance'
   }
 ];
 
@@ -114,4 +142,42 @@ export const UserAvatar = ({ user }: { user: UserData }) => {
       )}
     </Avatar>
   );
+};
+
+// Helper function to get role icon
+export const getRoleIcon = (role: UserRole) => {
+  switch (role) {
+    case 'technician':
+      return <HardHat className="h-4 w-4" />;
+    case 'tech_support':
+      return <Headset className="h-4 w-4" />;
+    case 'system_admin':
+      return <BookText className="h-4 w-4" />;
+    case 'maintenance_manager':
+      return <AlertTriangle className="h-4 w-4" />;
+    case 'admin':
+      return <User className="h-4 w-4" />;
+    case 'engineer':
+      return <User className="h-4 w-4" />;
+    case 'support':
+      return <User className="h-4 w-4" />;
+    case 'viewer':
+      return <User className="h-4 w-4" />;
+    default:
+      return <User className="h-4 w-4" />;
+  }
+};
+
+// Helper function to get role display name
+export const getRoleDisplayName = (role: UserRole) => {
+  switch (role) {
+    case 'tech_support':
+      return 'Tech Support';
+    case 'system_admin':
+      return 'System Admin';
+    case 'maintenance_manager':
+      return 'Maintenance Manager';
+    default:
+      return role.charAt(0).toUpperCase() + role.slice(1);
+  }
 };

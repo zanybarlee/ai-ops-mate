@@ -24,6 +24,32 @@ export async function queryChatbot(question: string) {
   }
 }
 
+// New function for knowledge base search
+export async function queryKnowledgeBase(searchQuery: string) {
+  try {
+    const response = await fetch(
+      "http://127.0.0.1:3001/api/v1/prediction/0794a211-607d-44b7-a89a-150c09a50094",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ question: searchQuery })
+      }
+    );
+    
+    if (!response.ok) {
+      throw new Error(`API request failed with status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error searching knowledge base:", error);
+    throw new Error("Failed to search knowledge base. Please try again later.");
+  }
+}
+
 // Local storage key for saving chat messages
 export const CHAT_STORAGE_KEY = 'ai-ops-assistant-chat';
 

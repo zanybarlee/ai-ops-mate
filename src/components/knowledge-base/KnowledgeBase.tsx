@@ -1,17 +1,21 @@
-
 import { useState } from 'react';
+import { useToast } from '@/components/ui/use-toast';
 import SearchBar from './SearchBar';
 import ArticlesList from './ArticlesList';
 import CategorySidebar from './CategorySidebar';
 import RecentUpdates from './RecentUpdates';
-import DocumentUpload from './document-upload';  // Updated import path
+import DocumentUpload from './document-upload';
 import { articles as mockArticles } from './mockData';
+import { queryKnowledgeBase } from '@/utils/chatApi';
+import { Article } from './types';
 
 const KnowledgeBase = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredArticles, setFilteredArticles] = useState(mockArticles);
+  const [filteredArticles, setFilteredArticles] = useState<Article[]>(mockArticles);
+  const [isSearching, setIsSearching] = useState(false);
+  const { toast } = useToast();
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!searchQuery.trim()) {
@@ -19,14 +23,41 @@ const KnowledgeBase = () => {
       return;
     }
     
-    const filtered = mockArticles.filter(article => 
-      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      article.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      article.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    setIsSearching(true);
     
-    setFilteredArticles(filtered);
+    try {
+      const response = await queryKnowledgeBase(searchQuery);
+      
+      const apiResults = response.text || '';
+      
+      const responseWords = apiResults.toLowerCase().split(/\s+/);
+      const filtered = mockArticles.filter(article => {
+        const articleContent = (
+          article.title.toLowerCase() + ' ' + 
+          article.excerpt.toLowerCase() + ' ' + 
+          article.category.toLowerCase() + ' ' + 
+          article.tags.join(' ').toLowerCase()
+        );
+        
+        return responseWords.some(word => 
+          word.length > 3 && articleContent.includes(word)
+        );
+      });
+      
+      setFilteredArticles(filtered.length > 0 ? filtered : []);
+      
+      console.log('API Response:', response);
+      
+    } catch (error) {
+      console.error('Search error:', error);
+      toast({
+        title: "Search Error",
+        description: "Failed to search the knowledge base. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSearching(false);
+    }
   };
 
   return (
@@ -42,6 +73,7 @@ const KnowledgeBase = () => {
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
             handleSearch={handleSearch}
+            isSearching={isSearching}
           />
           
           <ArticlesList filteredArticles={filteredArticles} />

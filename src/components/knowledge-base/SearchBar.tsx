@@ -1,17 +1,22 @@
 
+import { useState } from 'react';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
 import { popularSearches } from './mockData';
+import { useToast } from '@/components/ui/use-toast';
 
 interface SearchBarProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   handleSearch: (e: React.FormEvent) => void;
+  isSearching: boolean;
 }
 
-const SearchBar = ({ searchQuery, setSearchQuery, handleSearch }: SearchBarProps) => {
+const SearchBar = ({ searchQuery, setSearchQuery, handleSearch, isSearching }: SearchBarProps) => {
+  const { toast } = useToast();
+
   return (
     <Card className="glass-card overflow-hidden mb-6">
       <CardHeader className="pb-2 flex flex-col space-y-2">
@@ -27,12 +32,14 @@ const SearchBar = ({ searchQuery, setSearchQuery, handleSearch }: SearchBarProps
             className="pl-10 py-6 text-base focus-visible:ring-primary"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            disabled={isSearching}
           />
           <Button 
             type="submit"
             className="absolute right-1 top-1/2 transform -translate-y-1/2"
+            disabled={isSearching || !searchQuery.trim()}
           >
-            Search
+            {isSearching ? 'Searching...' : 'Search'}
           </Button>
         </form>
         
@@ -44,6 +51,7 @@ const SearchBar = ({ searchQuery, setSearchQuery, handleSearch }: SearchBarProps
                 key={index}
                 onClick={() => setSearchQuery(term)}
                 className="text-sm text-primary hover:underline focus:outline-none"
+                disabled={isSearching}
               >
                 {term}
               </button>

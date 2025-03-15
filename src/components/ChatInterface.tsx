@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,6 +5,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Send, Bot, User, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
   id: string;
@@ -82,7 +82,6 @@ const ChatInterface = () => {
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
     
-    // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
@@ -95,7 +94,6 @@ const ChatInterface = () => {
     setIsTyping(true);
     
     try {
-      // Get real response from the API
       const responseText = await queryChatbot(inputValue);
       
       const assistantMessage: Message = {
@@ -116,6 +114,17 @@ const ChatInterface = () => {
     } finally {
       setIsTyping(false);
     }
+  };
+
+  const renderMessageContent = (message: Message) => {
+    if (message.role === 'assistant') {
+      return (
+        <ReactMarkdown className="prose prose-sm dark:prose-invert max-w-none">
+          {message.content}
+        </ReactMarkdown>
+      );
+    }
+    return <p className="text-sm">{message.content}</p>;
   };
 
   return (
@@ -158,7 +167,7 @@ const ChatInterface = () => {
                     : "glass rounded-tl-none"
                 )}
               >
-                <p className="text-sm">{message.content}</p>
+                {renderMessageContent(message)}
               </div>
               <div 
                 className={cn(

@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -144,8 +143,53 @@ export default {
 			},
 			backdropBlur: {
 				'xs': '2px'
+			},
+			typography: {
+				DEFAULT: {
+					css: {
+						maxWidth: 'none',
+						color: 'inherit',
+						a: {
+							color: 'inherit',
+							textDecoration: 'none',
+						},
+						strong: {
+							color: 'inherit',
+						},
+						li: {
+							margin: '0.5em 0',
+						},
+						h1: {
+							color: 'inherit',
+						},
+						h2: {
+							color: 'inherit',
+						},
+						h3: {
+							color: 'inherit',
+						},
+						blockquote: {
+							borderLeftColor: 'currentColor',
+							fontStyle: 'italic',
+						},
+						code: {
+							color: 'inherit',
+							background: 'hsl(var(--secondary))',
+							padding: '0.2em 0.4em',
+							borderRadius: '3px',
+						},
+						pre: {
+							background: 'hsl(var(--secondary))',
+							padding: '1em',
+							borderRadius: '0.5em',
+						},
+					},
+				},
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		require('@tailwindcss/typography'),
+	],
 } satisfies Config;

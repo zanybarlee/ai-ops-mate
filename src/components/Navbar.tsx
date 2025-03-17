@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Calendar } from 'lucide-react';
 import AuthButton from './AuthButton';
 
 const Navbar = () => {
@@ -28,7 +28,8 @@ const Navbar = () => {
     { name: 'Home', path: '/' },
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'AI Assistant', path: '/chat' },
-    { name: 'Knowledge Base', path: '/knowledge' }
+    { name: 'Knowledge Base', path: '/knowledge' },
+    { name: 'Maintenance', path: '/maintenance', icon: Calendar }
   ];
 
   return (
@@ -56,10 +57,11 @@ const Navbar = () => {
               <Link
                 to={link.path}
                 className={cn(
-                  "text-sm font-medium hover:text-primary transition-colors duration-300",
+                  "text-sm font-medium hover:text-primary transition-colors duration-300 flex items-center gap-1",
                   location.pathname === link.path ? "text-primary" : "text-foreground/80"
                 )}
               >
+                {link.icon && <link.icon className="h-4 w-4" />}
                 {link.name}
               </Link>
             </li>
@@ -89,10 +91,11 @@ const Navbar = () => {
                 <Link
                   to={link.path}
                   className={cn(
-                    "text-sm font-medium block py-2 hover:text-primary transition-colors duration-300",
+                    "text-sm font-medium block py-2 hover:text-primary transition-colors duration-300 flex items-center gap-1",
                     location.pathname === link.path ? "text-primary" : "text-foreground/80"
                   )}
                 >
+                  {link.icon && <link.icon className="h-4 w-4" />}
                   {link.name}
                 </Link>
               </li>

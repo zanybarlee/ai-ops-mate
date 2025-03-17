@@ -4,6 +4,7 @@ import { MetricsCards } from './MetricsCards';
 import { PerformanceCharts } from './PerformanceCharts';
 import { IncidentTypeChart } from './IncidentTypeChart';
 import { IncidentList } from './IncidentList';
+import { Button } from '@/components/ui/button';
 
 const IncidentDashboard = () => {
   const [timeRange, setTimeRange] = useState('day');
@@ -37,5 +38,3 @@ const IncidentDashboard = () => {
 };
 
 export default IncidentDashboard;
-
-import { Button } from '@/components/ui/button';

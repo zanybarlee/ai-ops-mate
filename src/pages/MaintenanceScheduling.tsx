@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import MaintenanceScheduler from '@/components/maintenance/MaintenanceScheduler';
+import PersonnelManagement from '@/components/maintenance/PersonnelManagement';
+import EquipmentManagement from '@/components/maintenance/EquipmentManagement';
+import MaintenanceHistory from '@/components/maintenance/MaintenanceHistory';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
@@ -54,33 +57,15 @@ const MaintenanceScheduling = () => {
               </TabsContent>
               
               <TabsContent value="personnel" className="animate-fade-in">
-                <div className="glass-card p-6 rounded-lg">
-                  <h2 className="text-xl font-medium mb-4">Personnel Management</h2>
-                  <p className="text-muted-foreground">
-                    Manage personnel availability and skills for maintenance scheduling.
-                    This section will be implemented in the next phase.
-                  </p>
-                </div>
+                <PersonnelManagement />
               </TabsContent>
               
               <TabsContent value="equipment" className="animate-fade-in">
-                <div className="glass-card p-6 rounded-lg">
-                  <h2 className="text-xl font-medium mb-4">Equipment Management</h2>
-                  <p className="text-muted-foreground">
-                    Configure equipment maintenance cycles and requirements.
-                    This section will be implemented in the next phase.
-                  </p>
-                </div>
+                <EquipmentManagement />
               </TabsContent>
               
               <TabsContent value="history" className="animate-fade-in">
-                <div className="glass-card p-6 rounded-lg">
-                  <h2 className="text-xl font-medium mb-4">Maintenance History</h2>
-                  <p className="text-muted-foreground">
-                    View past maintenance schedules and completion status.
-                    This section will be implemented in the next phase.
-                  </p>
-                </div>
+                <MaintenanceHistory />
               </TabsContent>
             </Tabs>
           </>

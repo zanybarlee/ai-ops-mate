@@ -1,7 +1,10 @@
+
 import { useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
 import SearchBar from './SearchBar';
 import ArticlesList from './ArticlesList';
+import ArticleDetail from './ArticleDetail';
 import CategorySidebar from './CategorySidebar';
 import RecentUpdates from './RecentUpdates';
 import DocumentUpload from './document-upload';
@@ -12,8 +15,10 @@ import { Article } from './types';
 const KnowledgeBase = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredArticles, setFilteredArticles] = useState<Article[]>(mockArticles);
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +31,7 @@ const KnowledgeBase = () => {
     setIsSearching(true);
     
     try {
-      const response = await queryKnowledgeBase(searchQuery);
+      const response = await queryKnowledgeBase(searchQuery, user);
       
       const apiResults = response.text || '';
       
@@ -60,6 +65,14 @@ const KnowledgeBase = () => {
     }
   };
 
+  const handleSelectArticle = (article: Article) => {
+    setSelectedArticle(article);
+  };
+
+  const handleBackToList = () => {
+    setSelectedArticle(null);
+  };
+
   return (
     <div className="animate-fade-in">
       <div className="mb-6">
@@ -76,7 +89,15 @@ const KnowledgeBase = () => {
             isSearching={isSearching}
           />
           
-          <ArticlesList filteredArticles={filteredArticles} />
+          {selectedArticle ? (
+            <ArticleDetail article={selectedArticle} onBack={handleBackToList} />
+          ) : (
+            <ArticlesList 
+              filteredArticles={filteredArticles} 
+              isSearching={isSearching}
+              onSelectArticle={handleSelectArticle}
+            />
+          )}
         </div>
         
         <div>

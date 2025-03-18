@@ -8,9 +8,10 @@ import { Article } from './types';
 interface ArticlesListProps {
   filteredArticles: Article[];
   isSearching?: boolean;
+  onSelectArticle: (article: Article) => void;
 }
 
-const ArticlesList = ({ filteredArticles, isSearching = false }: ArticlesListProps) => {
+const ArticlesList = ({ filteredArticles, isSearching = false, onSelectArticle }: ArticlesListProps) => {
   return (
     <Card className="glass-card">
       <CardHeader className="pb-2">
@@ -75,7 +76,12 @@ const ArticlesList = ({ filteredArticles, isSearching = false }: ArticlesListPro
                     
                     <div className="mt-3 pt-3 border-t border-border flex justify-between items-center">
                       <span className="text-xs text-muted-foreground">{article.views} views</span>
-                      <Button variant="ghost" size="sm" className="text-primary gap-1">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-primary gap-1"
+                        onClick={() => onSelectArticle(article)}
+                      >
                         Read article
                         <ArrowRight size={14} />
                       </Button>

@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ThermalPowerDashboard from '@/components/maintenance/ThermalPowerDashboard';
 import PredictiveMaintenanceDashboard from '@/components/maintenance/PredictiveMaintenanceDashboard';
+import AiPoweredDcim from '@/components/maintenance/dcim/AiPoweredDcim';
 import { useAuth } from '@/contexts/AuthContext';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Shield } from 'lucide-react';
@@ -51,6 +52,7 @@ const EnergyManagement = () => {
                 <li>Current energy efficiency rating: 35% better than baseline</li>
                 <li>5 AI-generated optimizations are awaiting your approval</li>
                 <li><span className="text-primary font-medium">NEW:</span> Predictive maintenance has identified 3 potential issues</li>
+                <li><span className="text-primary font-medium">NEW:</span> AI-powered DCIM is autonomously optimizing resources</li>
               </ul>
             </div>
             
@@ -59,9 +61,10 @@ const EnergyManagement = () => {
               onValueChange={setActiveTab}
               className="space-y-4"
             >
-              <TabsList className="grid w-full grid-cols-2">
+              <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="thermal-power">Thermal & Power</TabsTrigger>
                 <TabsTrigger value="predictive-maintenance">Predictive Maintenance</TabsTrigger>
+                <TabsTrigger value="ai-dcim">AI-Powered DCIM</TabsTrigger>
               </TabsList>
               
               <TabsContent value="thermal-power">
@@ -70,6 +73,10 @@ const EnergyManagement = () => {
               
               <TabsContent value="predictive-maintenance">
                 <PredictiveMaintenanceDashboard />
+              </TabsContent>
+              
+              <TabsContent value="ai-dcim">
+                <AiPoweredDcim />
               </TabsContent>
             </Tabs>
           </>
@@ -82,4 +89,3 @@ const EnergyManagement = () => {
 };
 
 export default EnergyManagement;
-

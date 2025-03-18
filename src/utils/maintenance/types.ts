@@ -79,3 +79,65 @@ export interface KanbanColumn {
   title: string;
   tasks: KanbanTask[];
 }
+
+// Thermal Analytics Types
+export interface TemperatureData {
+  id: string;
+  location: string;
+  timestamp: string;
+  temperature: number;
+  humidity: number;
+  airflow: number;
+}
+
+export interface CoolingSystem {
+  id: string;
+  name: string;
+  status: 'active' | 'standby' | 'maintenance' | 'offline';
+  currentLoad: number; // percentage
+  energyConsumption: number; // kWh
+  efficiency: number; // percentage
+  location: string;
+}
+
+// Power Management Types
+export interface PowerUsageData {
+  id: string;
+  timestamp: string;
+  totalConsumption: number; // kWh
+  serverLoad: number; // kWh
+  coolingLoad: number; // kWh
+  otherLoad: number; // kWh
+  pue: number; // Power Usage Effectiveness
+}
+
+export interface UpsSystem {
+  id: string;
+  name: string;
+  status: 'active' | 'standby' | 'maintenance' | 'offline';
+  currentLoad: number; // percentage
+  batteryLevel: number; // percentage
+  estimatedRuntime: number; // minutes
+  efficiency: number; // percentage
+}
+
+export interface PowerSource {
+  id: string;
+  name: string;
+  type: 'grid' | 'generator' | 'solar' | 'battery' | 'fuel-cell';
+  status: 'active' | 'standby' | 'offline';
+  currentOutput: number; // kW
+  capacity: number; // kW
+  carbonIntensity: number; // gCO2/kWh
+}
+
+export interface PowerOptimizationRecommendation {
+  id: string;
+  timestamp: string;
+  type: 'cooling' | 'load-balancing' | 'battery' | 'scheduling' | 'routing';
+  description: string;
+  potentialSavings: number; // kWh or percentage
+  priority: 'high' | 'medium' | 'low';
+  status: 'implemented' | 'pending' | 'rejected';
+  implementationDate?: string;
+}

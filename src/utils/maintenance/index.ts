@@ -6,3 +6,4 @@ export * from './personnelUtils';
 export * from './equipmentUtils';
 export * from './historyUtils';
 export * from './kanbanUtils';
+export * from './thermalPowerUtils';

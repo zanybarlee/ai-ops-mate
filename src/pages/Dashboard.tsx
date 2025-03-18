@@ -3,14 +3,14 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import IncidentDashboard from '@/components/IncidentDashboard';
+import IncidentDashboard from '@/components/incidents/IncidentDashboard';
 import SuccessMetrics from '@/components/SuccessMetrics';
 import KnowledgeBase from '@/components/KnowledgeBase';
 import ChatInterface from '@/components/ChatInterface';
 import MaintenanceAlert from '@/components/maintenance/MaintenanceAlert';
 import { useAuth } from '@/contexts/AuthContext';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { Shield, Calendar } from 'lucide-react';
+import { Shield, Calendar, Zap } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 
@@ -58,6 +58,7 @@ const Dashboard = () => {
                 <TabsTrigger value="knowledge">Knowledge Base</TabsTrigger>
                 <TabsTrigger value="assistant">AI Assistant</TabsTrigger>
                 <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
+                <TabsTrigger value="energy">Energy</TabsTrigger>
               </TabsList>
               
               <TabsContent value="incidents" className="animate-fade-in">
@@ -97,6 +98,28 @@ const Dashboard = () => {
                     <p className="text-sm font-medium">The cooling system in Rack B3 requires maintenance within the next 7 days.</p>
                   </div>
                   <p>Access the full maintenance scheduling module for detailed roster management and equipment maintenance scheduling.</p>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="energy" className="animate-fade-in">
+                <div className="glass-card p-6 rounded-lg">
+                  <div className="flex justify-between items-center mb-4">
+                    <div>
+                      <h2 className="text-xl font-medium">Energy Management</h2>
+                      <p className="text-muted-foreground">AI-powered thermal analytics and dynamic power management</p>
+                    </div>
+                    <Button 
+                      onClick={() => navigate('/energy')} 
+                      className="flex items-center gap-2"
+                    >
+                      <Zap className="h-4 w-4" />
+                      Energy Dashboard
+                    </Button>
+                  </div>
+                  <div className="bg-green-500/10 border border-green-500/20 text-green-700 dark:text-green-400 p-4 rounded-lg mb-4">
+                    <p className="text-sm font-medium">AI has identified potential energy savings of up to 35% through optimized cooling operations.</p>
+                  </div>
+                  <p>Access the full energy management dashboard to view detailed thermal analytics and power optimization recommendations.</p>
                 </div>
               </TabsContent>
             </Tabs>

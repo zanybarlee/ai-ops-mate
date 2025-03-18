@@ -2,11 +2,10 @@
 import { useRef, useEffect } from 'react';
 import { useFloatingChat } from '@/contexts/FloatingChatContext';
 import { Button } from '@/components/ui/button';
-import { Bot, X, Minus, Maximize, RefreshCcw, Move, PinOff, Pin } from 'lucide-react';
+import { Bot, X, Minus, Maximize, Move, PinOff, Pin } from 'lucide-react';
 import { UserAvatar } from '@/contexts/AuthContext';
 import { useAuth } from '@/contexts/AuthContext';
 import ChatInterface from '@/components/ChatInterface';
-import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable';
 import { cn } from '@/lib/utils';
 
 export const FloatingChatButton = () => {
@@ -39,11 +38,14 @@ export const FloatingChatWindow = () => {
     isMinimized,
     toggleMinimize,
     isDetached,
-    toggleDetach
+    toggleDetach,
+    isResizing,
+    setIsResizing
   } = useFloatingChat();
   const { user } = useAuth();
   const chatRef = useRef<HTMLDivElement>(null);
   const dragHandleRef = useRef<HTMLDivElement>(null);
+  const resizeHandleRef = useRef<HTMLDivElement>(null);
   const offsetRef = useRef({ x: 0, y: 0 });
 
   // Handle dragging
@@ -97,6 +99,45 @@ export const FloatingChatWindow = () => {
       window.removeEventListener('mouseup', onMouseUp);
     };
   }, [isDragging, setIsDragging, setPosition, size.width]);
+
+  // Handle resizing
+  useEffect(() => {
+    if (!resizeHandleRef.current) return;
+
+    const resizeHandle = resizeHandleRef.current;
+    
+    const onMouseDown = (e: MouseEvent) => {
+      e.preventDefault();
+      setIsResizing(true);
+    };
+    
+    const onMouseMove = (e: MouseEvent) => {
+      if (!isResizing) return;
+      
+      // Calculate new width and height
+      const newWidth = Math.max(300, e.clientX - position.x);
+      const newHeight = Math.max(300, e.clientY - position.y);
+      
+      setSize({
+        width: newWidth,
+        height: newHeight
+      });
+    };
+    
+    const onMouseUp = () => {
+      setIsResizing(false);
+    };
+    
+    resizeHandle.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+    
+    return () => {
+      resizeHandle.removeEventListener('mousedown', onMouseDown);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+  }, [isResizing, position.x, position.y, setIsResizing, setSize]);
 
   // Reposition chat window when detached state changes
   useEffect(() => {
@@ -169,6 +210,22 @@ export const FloatingChatWindow = () => {
         <div className="h-[calc(100%-2.5rem)] flex flex-col">
           <ChatInterface isFloating={true} />
         </div>
+      )}
+
+      {/* Resize handle in the bottom-right corner */}
+      {!isMinimized && (
+        <div 
+          ref={resizeHandleRef}
+          className={cn(
+            "absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize z-10",
+            isResizing ? "bg-primary/20" : ""
+          )}
+          style={{
+            backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.4) 1px, transparent 1px)',
+            backgroundSize: '3px 3px',
+            backgroundPosition: 'bottom right'
+          }}
+        />
       )}
     </div>
   );

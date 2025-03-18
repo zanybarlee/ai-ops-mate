@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ThermalPowerDashboard from '@/components/maintenance/ThermalPowerDashboard';
-import AiPoweredDcim from '@/components/maintenance/dcim/AiPoweredDcim';
 import { useAuth } from '@/contexts/AuthContext';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Shield } from 'lucide-react';
@@ -50,7 +49,7 @@ const EnergyManagement = () => {
                 <li>Power load balancing has reduced peak demand by 22%</li>
                 <li>Current energy efficiency rating: 35% better than baseline</li>
                 <li>5 AI-generated optimizations are awaiting your approval</li>
-                <li><span className="text-primary font-medium">NEW:</span> AI-powered DCIM is autonomously optimizing resources</li>
+                <li><span className="text-primary font-medium">TIP:</span> Check the Maintenance section for AI-Powered DCIM insights</li>
                 <li><span className="text-primary font-medium">TIP:</span> Check the Maintenance section for Predictive Maintenance insights</li>
               </ul>
             </div>
@@ -60,17 +59,12 @@ const EnergyManagement = () => {
               onValueChange={setActiveTab}
               className="space-y-4"
             >
-              <TabsList className="grid w-full grid-cols-2">
+              <TabsList className="grid w-full grid-cols-1">
                 <TabsTrigger value="thermal-power">Thermal & Power</TabsTrigger>
-                <TabsTrigger value="ai-dcim">AI-Powered DCIM</TabsTrigger>
               </TabsList>
               
               <TabsContent value="thermal-power">
                 <ThermalPowerDashboard />
-              </TabsContent>
-              
-              <TabsContent value="ai-dcim">
-                <AiPoweredDcim />
               </TabsContent>
             </Tabs>
           </>

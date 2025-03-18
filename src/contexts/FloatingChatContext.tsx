@@ -14,6 +14,8 @@ interface FloatingChatContextType {
   setSize: (size: { width: number; height: number }) => void;
   isMinimized: boolean;
   toggleMinimize: () => void;
+  isDetached: boolean;
+  toggleDetach: () => void;
 }
 
 const FloatingChatContext = createContext<FloatingChatContextType | undefined>(undefined);
@@ -27,11 +29,13 @@ export const FloatingChatProvider = ({ children }: { children: ReactNode }) => {
   });
   const [size, setSize] = useState({ width: 480, height: 600 });
   const [isMinimized, setIsMinimized] = useState(false);
+  const [isDetached, setIsDetached] = useState(false);
 
   const toggleChat = () => setIsOpen(prev => !prev);
   const openChat = () => setIsOpen(true);
   const closeChat = () => setIsOpen(false);
   const toggleMinimize = () => setIsMinimized(prev => !prev);
+  const toggleDetach = () => setIsDetached(prev => !prev);
 
   return (
     <FloatingChatContext.Provider value={{
@@ -46,7 +50,9 @@ export const FloatingChatProvider = ({ children }: { children: ReactNode }) => {
       size,
       setSize,
       isMinimized,
-      toggleMinimize
+      toggleMinimize,
+      isDetached,
+      toggleDetach
     }}>
       {children}
     </FloatingChatContext.Provider>

@@ -2,7 +2,7 @@
 import { useRef, useEffect } from 'react';
 import { useFloatingChat } from '@/contexts/FloatingChatContext';
 import { Button } from '@/components/ui/button';
-import { Bot, X, Minus, Maximize, RefreshCcw, Move } from 'lucide-react';
+import { Bot, X, Minus, Maximize, RefreshCcw, Move, PinOff, Pin } from 'lucide-react';
 import { UserAvatar } from '@/contexts/AuthContext';
 import { useAuth } from '@/contexts/AuthContext';
 import ChatInterface from '@/components/ChatInterface';
@@ -37,7 +37,9 @@ export const FloatingChatWindow = () => {
     size, 
     setSize,
     isMinimized,
-    toggleMinimize
+    toggleMinimize,
+    isDetached,
+    toggleDetach
   } = useFloatingChat();
   const { user } = useAuth();
   const chatRef = useRef<HTMLDivElement>(null);
@@ -96,6 +98,23 @@ export const FloatingChatWindow = () => {
     };
   }, [isDragging, setIsDragging, setPosition, size.width]);
 
+  // Reposition chat window when detached state changes
+  useEffect(() => {
+    if (isDetached) {
+      // Center the chat window when detached
+      setPosition({
+        x: (window.innerWidth - size.width) / 2,
+        y: (window.innerHeight - size.height) / 2
+      });
+    } else {
+      // Return to default position when attached
+      setPosition({
+        x: window.innerWidth - size.width - 20,
+        y: window.innerHeight - size.height - 20
+      });
+    }
+  }, [isDetached, size.width, size.height, setPosition]);
+
   // Update pointer styles based on drag state
   const handleStyles = cn(
     "flex items-center justify-between px-4 py-2 border-b border-border bg-primary/5",
@@ -115,7 +134,8 @@ export const FloatingChatWindow = () => {
       }}
       className={cn(
         "fixed shadow-glass glass-card rounded-lg z-50 overflow-hidden transition-all duration-200",
-        isDragging ? "opacity-80" : "opacity-100"
+        isDragging ? "opacity-80" : "opacity-100",
+        isDetached ? "shadow-xl" : ""
       )}
     >
       <div 
@@ -133,6 +153,9 @@ export const FloatingChatWindow = () => {
           </div>
         </div>
         <div className="flex items-center gap-1">
+          <Button variant="ghost" size="icon" onClick={toggleDetach} className="h-8 w-8" title={isDetached ? "Attach" : "Detach"}>
+            {isDetached ? <Pin size={14} /> : <PinOff size={14} />}
+          </Button>
           <Button variant="ghost" size="icon" onClick={toggleMinimize} className="h-8 w-8">
             {isMinimized ? <Maximize size={14} /> : <Minus size={14} />}
           </Button>

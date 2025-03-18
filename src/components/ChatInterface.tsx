@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 import { Message, serializeMessage, deserializeMessage } from '@/types/chat';
 import { 
   queryChatbot, 
@@ -27,6 +28,7 @@ const ChatInterface = ({ selectedPrompt }: ChatInterfaceProps) => {
   const [messages, setMessages] = useState<Message[]>([DEFAULT_WELCOME_MESSAGE]);
   const [isTyping, setIsTyping] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   // Load saved messages from localStorage on component mount
   useEffect(() => {
@@ -71,7 +73,8 @@ const ChatInterface = ({ selectedPrompt }: ChatInterfaceProps) => {
     setIsTyping(true);
     
     try {
-      const responseText = await queryChatbot(inputValue);
+      // Pass the user data to the API for session tracking
+      const responseText = await queryChatbot(inputValue, user);
       
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),

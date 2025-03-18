@@ -1,6 +1,22 @@
 
-export async function queryChatbot(question: string) {
+import { UserData } from '@/contexts/AuthContext';
+
+export async function queryChatbot(question: string, user: UserData | null = null) {
   try {
+    const payload: any = { question };
+    
+    // Add user session info if available
+    if (user) {
+      payload.overrideConfig = {
+        sessionId: user.id,
+        metadata: {
+          role: user.role,
+          name: user.name,
+          email: user.email
+        }
+      };
+    }
+    
     const response = await fetch(
       "http://127.0.0.1:3001/api/v1/prediction/0794a211-607d-44b7-a89a-150c09a50094",
       {
@@ -8,7 +24,7 @@ export async function queryChatbot(question: string) {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ question })
+        body: JSON.stringify(payload)
       }
     );
     
@@ -25,8 +41,22 @@ export async function queryChatbot(question: string) {
 }
 
 // New function for knowledge base search
-export async function queryKnowledgeBase(searchQuery: string) {
+export async function queryKnowledgeBase(searchQuery: string, user: UserData | null = null) {
   try {
+    const payload: any = { question: searchQuery };
+    
+    // Add user session info if available
+    if (user) {
+      payload.overrideConfig = {
+        sessionId: user.id,
+        metadata: {
+          role: user.role,
+          name: user.name,
+          email: user.email
+        }
+      };
+    }
+    
     const response = await fetch(
       "http://127.0.0.1:3001/api/v1/prediction/0794a211-607d-44b7-a89a-150c09a50094",
       {
@@ -34,7 +64,7 @@ export async function queryKnowledgeBase(searchQuery: string) {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ question: searchQuery })
+        body: JSON.stringify(payload)
       }
     );
     

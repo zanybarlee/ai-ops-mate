@@ -21,8 +21,11 @@ const FloatingChatContext = createContext<FloatingChatContextType | undefined>(u
 export const FloatingChatProvider = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [position, setPosition] = useState({ x: 20, y: window.innerHeight - 100 });
-  const [size, setSize] = useState({ width: 380, height: 500 });
+  const [position, setPosition] = useState({ 
+    x: window.innerWidth - 480 - 20, 
+    y: window.innerHeight - 600 - 20 
+  });
+  const [size, setSize] = useState({ width: 480, height: 600 });
   const [isMinimized, setIsMinimized] = useState(false);
 
   const toggleChat = () => setIsOpen(prev => !prev);

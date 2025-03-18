@@ -1,34 +1,14 @@
 
 import { useRef, useEffect } from 'react';
 import { useFloatingChat } from '@/contexts/FloatingChatContext';
-import { Button } from '@/components/ui/button';
-import { Bot, X, Minus, Maximize, Move, PinOff, Pin } from 'lucide-react';
-import { UserAvatar } from '@/contexts/AuthContext';
-import { useAuth } from '@/contexts/AuthContext';
 import ChatInterface from '@/components/ChatInterface';
+import { FloatingChatHeader } from './FloatingChatHeader';
+import { ResizeHandle } from './ResizeHandle';
 import { cn } from '@/lib/utils';
-
-export const FloatingChatButton = () => {
-  const { toggleChat, isOpen } = useFloatingChat();
-  
-  return (
-    <Button 
-      onClick={toggleChat}
-      className={cn(
-        "fixed bottom-5 right-5 rounded-full size-14 shadow-lg z-50 transition-all duration-300",
-        isOpen ? "scale-0 opacity-0" : "scale-100 opacity-100"
-      )}
-      size="icon"
-    >
-      <Bot size={24} />
-    </Button>
-  );
-};
 
 export const FloatingChatWindow = () => {
   const { 
     isOpen, 
-    closeChat, 
     isDragging, 
     setIsDragging, 
     position, 
@@ -36,13 +16,11 @@ export const FloatingChatWindow = () => {
     size, 
     setSize,
     isMinimized,
-    toggleMinimize,
     isDetached,
-    toggleDetach,
     isResizing,
     setIsResizing
   } = useFloatingChat();
-  const { user } = useAuth();
+  
   const chatRef = useRef<HTMLDivElement>(null);
   const dragHandleRef = useRef<HTMLDivElement>(null);
   const resizeHandleRef = useRef<HTMLDivElement>(null);
@@ -156,12 +134,6 @@ export const FloatingChatWindow = () => {
     }
   }, [isDetached, size.width, size.height, setPosition]);
 
-  // Update pointer styles based on drag state
-  const handleStyles = cn(
-    "flex items-center justify-between px-4 py-2 border-b border-border bg-primary/5",
-    isDragging ? "cursor-grabbing" : "cursor-grab"
-  );
-
   if (!isOpen) return null;
 
   return (
@@ -179,32 +151,7 @@ export const FloatingChatWindow = () => {
         isDetached ? "shadow-xl" : ""
       )}
     >
-      <div 
-        ref={dragHandleRef}
-        className={handleStyles}
-      >
-        <div className="flex items-center gap-2">
-          <Move size={16} className="mr-1 text-muted-foreground" />
-          {user && <UserAvatar user={user} />}
-          <div>
-            <p className="text-sm font-medium">AI Assistant</p>
-            <p className="text-xs text-muted-foreground">
-              {user ? `Logged in as ${user.name}` : 'Chat with AI'}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" onClick={toggleDetach} className="h-8 w-8" title={isDetached ? "Attach" : "Detach"}>
-            {isDetached ? <Pin size={14} /> : <PinOff size={14} />}
-          </Button>
-          <Button variant="ghost" size="icon" onClick={toggleMinimize} className="h-8 w-8">
-            {isMinimized ? <Maximize size={14} /> : <Minus size={14} />}
-          </Button>
-          <Button variant="ghost" size="icon" onClick={closeChat} className="h-8 w-8">
-            <X size={14} />
-          </Button>
-        </div>
-      </div>
+      <FloatingChatHeader dragHandleRef={dragHandleRef} />
       
       {!isMinimized && (
         <div className="h-[calc(100%-2.5rem)] flex flex-col">
@@ -213,29 +160,7 @@ export const FloatingChatWindow = () => {
       )}
 
       {/* Resize handle in the bottom-right corner */}
-      {!isMinimized && (
-        <div 
-          ref={resizeHandleRef}
-          className={cn(
-            "absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize z-10",
-            isResizing ? "bg-primary/20" : ""
-          )}
-          style={{
-            backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.4) 1px, transparent 1px)',
-            backgroundSize: '3px 3px',
-            backgroundPosition: 'bottom right'
-          }}
-        />
-      )}
+      {!isMinimized && <ResizeHandle resizeHandleRef={resizeHandleRef} />}
     </div>
-  );
-};
-
-export const FloatingChat = () => {
-  return (
-    <>
-      <FloatingChatButton />
-      <FloatingChatWindow />
-    </>
   );
 };

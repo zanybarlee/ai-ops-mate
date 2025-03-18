@@ -7,6 +7,7 @@ export interface Article {
   lastUpdated: string;
   excerpt: string;
   views: number;
+  content?: string;
 }
 
 export interface Category {

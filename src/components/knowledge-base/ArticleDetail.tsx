@@ -3,8 +3,7 @@ import React from 'react';
 import { Card, CardHeader, CardContent, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { ArrowLeft, Clock, Tag, Eye, BookOpen, Bookmark } from 'lucide-react';
+import { ArrowLeft, Clock, Eye, BookOpen, Bookmark, Share, Printer, Bell } from 'lucide-react';
 import { Article } from './types';
 
 interface ArticleDetailProps {
@@ -15,32 +14,8 @@ interface ArticleDetailProps {
 const ArticleDetail = ({ article, onBack }: ArticleDetailProps) => {
   if (!article) return null;
 
-  // This would typically come from an API call in a real application
-  const fullContent = `
-    ${article.excerpt}
-    
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies tincidunt, nunc nisl aliquam nisl, eget aliquam nisl nunc vel nisl. Donec auctor, nisl eget ultricies tincidunt, nunc nisl aliquam nisl, eget aliquam nisl nunc vel nisl.
-    
-    ## Key Points
-    
-    - Point 1: Important technical information related to this article
-    - Point 2: Critical steps to follow when implementing this solution
-    - Point 3: Common issues and their resolutions
-    
-    ## Technical Details
-    
-    The implementation requires careful consideration of the following factors:
-    
-    1. System compatibility
-    2. Performance optimization
-    3. Security considerations
-    
-    ## References
-    
-    - Internal Documentation: KB${article.id.replace('KB', '')}-A
-    - Manufacturer Guidelines: Section 3.4.2
-    - Industry Standards: ISO 27001
-  `;
+  // Use the content from the article object, or use a fallback if not available
+  const content = article.content || article.excerpt;
 
   return (
     <Card className="glass-card animate-fade-in">
@@ -85,22 +60,42 @@ const ArticleDetail = ({ article, onBack }: ArticleDetailProps) => {
         </div>
         
         <div className="prose prose-sm max-w-none dark:prose-invert">
-          {fullContent.split('\n\n').map((paragraph, idx) => {
-            if (paragraph.startsWith('##')) {
+          {content.split('\n\n').map((paragraph, idx) => {
+            // Handle headers (# and ##)
+            if (paragraph.startsWith('# ')) {
+              return (
+                <h2 key={idx} className="text-xl font-semibold mt-6 mb-3">
+                  {paragraph.replace('# ', '')}
+                </h2>
+              );
+            } else if (paragraph.startsWith('## ')) {
               return (
                 <h3 key={idx} className="text-lg font-medium mt-6 mb-3">
-                  {paragraph.replace('##', '').trim()}
+                  {paragraph.replace('## ', '')}
                 </h3>
               );
-            } else if (paragraph.startsWith('-')) {
+            } 
+            // Handle code blocks
+            else if (paragraph.startsWith('```') && paragraph.endsWith('```')) {
+              const code = paragraph.replace(/^```(\w+)?\n/, '').replace(/```$/, '');
+              return (
+                <pre key={idx} className="bg-muted p-4 rounded-md overflow-auto my-3">
+                  <code>{code}</code>
+                </pre>
+              );
+            }
+            // Handle bulleted lists
+            else if (paragraph.split('\n').every(line => line.trim().startsWith('- '))) {
               return (
                 <ul key={idx} className="list-disc pl-5 my-3">
                   {paragraph.split('\n').map((item, i) => (
-                    <li key={i} className="my-1">{item.replace('-', '').trim()}</li>
+                    <li key={i} className="my-1">{item.replace('- ', '')}</li>
                   ))}
                 </ul>
               );
-            } else if (paragraph.includes('1.')) {
+            }
+            // Handle numbered lists
+            else if (paragraph.split('\n').some(line => /^\d+\.\s/.test(line.trim()))) {
               return (
                 <ol key={idx} className="list-decimal pl-5 my-3">
                   {paragraph.split('\n').map((item, i) => {
@@ -109,7 +104,41 @@ const ArticleDetail = ({ article, onBack }: ArticleDetailProps) => {
                   })}
                 </ol>
               );
-            } else {
+            }
+            // Handle tables
+            else if (paragraph.includes('|') && paragraph.includes('\n|')) {
+              const tableRows = paragraph.split('\n');
+              // Filter out separator rows (---|---) used in markdown tables
+              const filteredRows = tableRows.filter(row => !row.match(/^\|\s*[-:]+\s*\|/));
+              return (
+                <div key={idx} className="overflow-x-auto my-4">
+                  <table className="min-w-full divide-y divide-border text-sm">
+                    <thead>
+                      <tr>
+                        {filteredRows[0]?.split('|').filter(Boolean).map((cell, i) => (
+                          <th key={i} className="px-3 py-2 text-left font-medium bg-muted">
+                            {cell.trim()}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {filteredRows.slice(1).map((row, i) => (
+                        <tr key={i}>
+                          {row.split('|').filter(Boolean).map((cell, j) => (
+                            <td key={j} className="px-3 py-2">
+                              {cell.trim()}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              );
+            }
+            // Default paragraph rendering
+            else {
               return <p key={idx} className="my-3">{paragraph}</p>;
             }
           })}
@@ -123,12 +152,15 @@ const ArticleDetail = ({ article, onBack }: ArticleDetailProps) => {
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm">
+            <Printer size={14} className="mr-1" />
             Print
           </Button>
           <Button variant="outline" size="sm">
+            <Share size={14} className="mr-1" />
             Share
           </Button>
           <Button variant="default" size="sm">
+            <Bell size={14} className="mr-1" />
             Follow Article
           </Button>
         </div>

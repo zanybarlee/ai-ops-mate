@@ -141,3 +141,58 @@ export interface PowerOptimizationRecommendation {
   status: 'implemented' | 'pending' | 'rejected';
   implementationDate?: string;
 }
+
+// AI-Driven Predictive Maintenance Types
+export interface IoTSensor {
+  id: string;
+  name: string;
+  equipmentId: string;
+  equipmentName: string;
+  type: 'vibration' | 'temperature' | 'power' | 'humidity' | 'airflow' | 'pressure' | 'acoustic';
+  location: string;
+  status: 'online' | 'offline' | 'maintenance';
+  lastReading: SensorReading;
+  batteryLevel?: number; // percentage
+  maintenanceDate?: string;
+}
+
+export interface SensorReading {
+  id: string;
+  sensorId: string;
+  timestamp: string;
+  value: number;
+  unit: string;
+  normalRange: {
+    min: number;
+    max: number;
+  };
+  status: 'normal' | 'warning' | 'critical';
+}
+
+export interface PredictiveMaintenance {
+  id: string;
+  equipmentId: string;
+  equipmentName: string;
+  predictionDate: string;
+  failureProbability: number; // percentage
+  estimatedTimeToFailure: number; // days
+  affectedComponent: string;
+  priority: 'high' | 'medium' | 'low';
+  status: 'pending' | 'scheduled' | 'completed' | 'ignored';
+  maintenanceWindowStart?: string;
+  maintenanceWindowEnd?: string;
+  assignedTo?: string;
+  notes?: string;
+  sensorData: {
+    sensorId: string;
+    sensorName: string;
+    anomalyDetected: boolean;
+    dataPoints: Array<{
+      timestamp: string;
+      value: number;
+      predicted: number;
+      threshold: number;
+    }>;
+  }[];
+}
+

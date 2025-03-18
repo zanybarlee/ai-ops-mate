@@ -1,14 +1,18 @@
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ThermalPowerDashboard from '@/components/maintenance/ThermalPowerDashboard';
+import PredictiveMaintenanceDashboard from '@/components/maintenance/PredictiveMaintenanceDashboard';
 import { useAuth } from '@/contexts/AuthContext';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Shield } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const EnergyManagement = () => {
+  const [activeTab, setActiveTab] = useState('thermal-power');
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -35,7 +39,7 @@ const EnergyManagement = () => {
           <>
             <div className="mb-6">
               <h1 className="text-3xl font-bold">Energy Management</h1>
-              <p className="text-muted-foreground mt-2">AI-powered thermal analytics and dynamic power management</p>
+              <p className="text-muted-foreground mt-2">AI-powered energy optimization and infrastructure management</p>
             </div>
             
             <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 mb-8">
@@ -46,10 +50,28 @@ const EnergyManagement = () => {
                 <li>Power load balancing has reduced peak demand by 22%</li>
                 <li>Current energy efficiency rating: 35% better than baseline</li>
                 <li>5 AI-generated optimizations are awaiting your approval</li>
+                <li><span className="text-primary font-medium">NEW:</span> Predictive maintenance has identified 3 potential issues</li>
               </ul>
             </div>
             
-            <ThermalPowerDashboard />
+            <Tabs
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="space-y-4"
+            >
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="thermal-power">Thermal & Power</TabsTrigger>
+                <TabsTrigger value="predictive-maintenance">Predictive Maintenance</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="thermal-power">
+                <ThermalPowerDashboard />
+              </TabsContent>
+              
+              <TabsContent value="predictive-maintenance">
+                <PredictiveMaintenanceDashboard />
+              </TabsContent>
+            </Tabs>
           </>
         )}
       </main>
@@ -60,3 +82,4 @@ const EnergyManagement = () => {
 };
 
 export default EnergyManagement;
+

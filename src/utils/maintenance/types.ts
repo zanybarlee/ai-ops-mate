@@ -57,3 +57,25 @@ export interface MaintenanceHistoryData {
   notes?: string;
   duration?: string;
 }
+
+// Kanban Task Types
+export type KanbanColumnType = 'backlog' | 'todo' | 'in-progress' | 'completed';
+
+export interface KanbanTask {
+  id: string;
+  title: string;
+  description?: string;
+  equipmentId?: string;
+  equipmentName: string;
+  assignedTo?: string;
+  dueDate?: string;
+  priority: 'high' | 'medium' | 'low';
+  status: KanbanColumnType;
+  category: string;
+}
+
+export interface KanbanColumn {
+  id: KanbanColumnType;
+  title: string;
+  tasks: KanbanTask[];
+}

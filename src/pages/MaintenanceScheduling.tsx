@@ -6,6 +6,7 @@ import MaintenanceScheduler from '@/components/maintenance/MaintenanceScheduler'
 import PersonnelManagement from '@/components/maintenance/PersonnelManagement';
 import EquipmentManagement from '@/components/maintenance/EquipmentManagement';
 import MaintenanceHistory from '@/components/maintenance/MaintenanceHistory';
+import MaintenanceKanban from '@/components/maintenance/MaintenanceKanban';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
@@ -47,6 +48,7 @@ const MaintenanceScheduling = () => {
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
               <TabsList className="mb-2">
                 <TabsTrigger value="scheduler">Scheduler</TabsTrigger>
+                <TabsTrigger value="kanban">Task Board</TabsTrigger>
                 <TabsTrigger value="personnel">Personnel</TabsTrigger>
                 <TabsTrigger value="equipment">Equipment</TabsTrigger>
                 <TabsTrigger value="history">History</TabsTrigger>
@@ -54,6 +56,10 @@ const MaintenanceScheduling = () => {
               
               <TabsContent value="scheduler" className="animate-fade-in">
                 <MaintenanceScheduler />
+              </TabsContent>
+              
+              <TabsContent value="kanban" className="animate-fade-in">
+                <MaintenanceKanban />
               </TabsContent>
               
               <TabsContent value="personnel" className="animate-fade-in">

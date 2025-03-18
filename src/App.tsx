@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./contexts/AuthContext";
 import { FloatingChatProvider } from "./contexts/FloatingChatContext";
 import { FloatingChat } from "./components/floating-chat/FloatingChatbot";
+import { VoiceBot } from "./components/voice-bot/VoiceBot";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
             <FloatingChat />
+            <VoiceBot />
           </BrowserRouter>
         </FloatingChatProvider>
       </AuthProvider>

@@ -1,11 +1,10 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useState } from 'react';
-import { Server, Cpu, Memory, Database, HardDrive, RefreshCw } from 'lucide-react';
+import { Server, Cpu, MemoryStick, Database, HardDrive, RefreshCw } from 'lucide-react';
 
 // Mock data for server racks
 const serverRacks = [
@@ -135,7 +134,7 @@ const ResourceAllocationMap = () => {
                     </TableHead>
                     <TableHead>
                       <div className="flex items-center">
-                        <Memory className="h-4 w-4 mr-1" />
+                        <MemoryStick className="h-4 w-4 mr-1" />
                         Memory
                       </div>
                     </TableHead>
@@ -218,3 +217,4 @@ const ResourceAllocationMap = () => {
 };
 
 export default ResourceAllocationMap;
+

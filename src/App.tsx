@@ -12,6 +12,8 @@ import MaintenanceScheduling from "./pages/MaintenanceScheduling";
 import EnergyManagement from "./pages/EnergyManagement";
 import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./contexts/AuthContext";
+import { FloatingChatProvider } from "./contexts/FloatingChatContext";
+import { FloatingChat } from "./components/floating-chat/FloatingChatbot";
 
 const queryClient = new QueryClient();
 
@@ -19,20 +21,23 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/knowledge" element={<Knowledge />} />
-            <Route path="/maintenance" element={<MaintenanceScheduling />} />
-            <Route path="/energy" element={<EnergyManagement />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <FloatingChatProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/chat" element={<Chat />} />
+              <Route path="/knowledge" element={<Knowledge />} />
+              <Route path="/maintenance" element={<MaintenanceScheduling />} />
+              <Route path="/energy" element={<EnergyManagement />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <FloatingChat />
+          </BrowserRouter>
+        </FloatingChatProvider>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>

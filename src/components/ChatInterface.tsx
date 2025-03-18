@@ -22,9 +22,10 @@ const DEFAULT_WELCOME_MESSAGE: Message = {
 
 interface ChatInterfaceProps {
   selectedPrompt?: string | null;
+  isFloating?: boolean;
 }
 
-const ChatInterface = ({ selectedPrompt }: ChatInterfaceProps) => {
+const ChatInterface = ({ selectedPrompt, isFloating = false }: ChatInterfaceProps) => {
   const [messages, setMessages] = useState<Message[]>([DEFAULT_WELCOME_MESSAGE]);
   const [isTyping, setIsTyping] = useState(false);
   const { toast } = useToast();
@@ -97,8 +98,8 @@ const ChatInterface = ({ selectedPrompt }: ChatInterfaceProps) => {
   };
 
   return (
-    <div className="flex flex-col h-full max-h-[600px] glass-card overflow-hidden">
-      <ChatHeader onReset={resetConversation} />
+    <div className={`flex flex-col ${isFloating ? 'h-full' : 'h-full max-h-[600px]'} glass-card overflow-hidden`}>
+      <ChatHeader onReset={resetConversation} isFloating={isFloating} />
       <MessageList messages={messages} isTyping={isTyping} />
       <ChatInput onSendMessage={handleSendMessage} isTyping={isTyping} />
     </div>

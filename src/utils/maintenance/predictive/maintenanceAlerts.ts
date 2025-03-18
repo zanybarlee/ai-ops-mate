@@ -1,6 +1,8 @@
 
 import { PredictiveMaintenance } from '../types';
 import { mockPredictiveMaintenance } from './mockData';
+import { getTotalEquipmentCount } from './equipmentUtils';
+import { fetchIoTSensors } from './iotSensors';
 
 export const fetchPredictiveMaintenanceAlerts = (): PredictiveMaintenance[] => {
   return mockPredictiveMaintenance;
@@ -11,6 +13,8 @@ export const getPredictiveMaintenanceMetrics = (): {
   highPriorityAlerts: number;
   scheduledMaintenance: number;
   averageTimeToFailure: number;
+  equipmentCount: number;
+  sensorCount: number;
 } => {
   const alerts = mockPredictiveMaintenance;
   const pendingAlerts = alerts.filter(alert => alert.status === 'pending').length;
@@ -22,10 +26,15 @@ export const getPredictiveMaintenanceMetrics = (): {
   const totalDays = relevantAlerts.reduce((sum, alert) => sum + alert.estimatedTimeToFailure, 0);
   const averageTimeToFailure = relevantAlerts.length > 0 ? Math.round(totalDays / relevantAlerts.length) : 0;
   
+  const equipmentCount = getTotalEquipmentCount();
+  const sensorCount = fetchIoTSensors().length;
+  
   return {
     pendingAlerts,
     highPriorityAlerts,
     scheduledMaintenance,
-    averageTimeToFailure
+    averageTimeToFailure,
+    equipmentCount,
+    sensorCount
   };
 };

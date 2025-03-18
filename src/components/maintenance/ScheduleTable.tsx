@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/table';
 import { UserCheck, Settings } from 'lucide-react';
 import { format, addDays } from 'date-fns';
-import { MaintenanceRow } from '@/utils/maintenanceUtils';
+import { MaintenanceRow } from '@/utils/maintenance';
 
 interface ScheduleTableProps {
   weekStart: Date;

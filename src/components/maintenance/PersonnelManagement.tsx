@@ -19,8 +19,7 @@ import {
   Check
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
-import { format } from 'date-fns';
-import { PersonnelData, fetchPersonnelData } from '@/utils/maintenanceUtils';
+import { PersonnelData, fetchPersonnelData } from '@/utils/maintenance';
 
 const PersonnelManagement = () => {
   const [personnel, setPersonnel] = useState<PersonnelData[]>(() => fetchPersonnelData());

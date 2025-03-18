@@ -21,8 +21,7 @@ import {
   Download
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { format } from 'date-fns';
-import { MaintenanceHistoryData, fetchMaintenanceHistory } from '@/utils/maintenanceUtils';
+import { MaintenanceHistoryData, fetchMaintenanceHistory } from '@/utils/maintenance';
 
 const MaintenanceHistory = () => {
   const [history, setHistory] = useState<MaintenanceHistoryData[]>(() => fetchMaintenanceHistory());

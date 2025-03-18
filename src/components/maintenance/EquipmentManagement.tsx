@@ -20,8 +20,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { Badge } from '@/components/ui/badge';
-import { format } from 'date-fns';
-import { EquipmentData, fetchEquipmentData } from '@/utils/maintenanceUtils';
+import { EquipmentData, fetchEquipmentData } from '@/utils/maintenance';
 
 const EquipmentManagement = () => {
   const [equipment, setEquipment] = useState<EquipmentData[]>(() => fetchEquipmentData());

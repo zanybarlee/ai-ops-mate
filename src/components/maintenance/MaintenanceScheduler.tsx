@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { startOfWeek } from 'date-fns';
-import { generateMockMaintenanceData, MaintenanceRow } from '@/utils/maintenanceUtils';
+import { generateMockMaintenanceData, MaintenanceRow } from '@/utils/maintenance';
 import MaintenanceAlert from './MaintenanceAlert';
 import ScheduleCalendar from './ScheduleCalendar';
 import ScheduleHeader from './ScheduleHeader';

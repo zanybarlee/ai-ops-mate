@@ -6,7 +6,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { RefreshCw, Download } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { format, startOfWeek } from 'date-fns';
-import { generateMockMaintenanceData } from '@/utils/maintenanceUtils';
+import { generateMockMaintenanceData } from '@/utils/maintenance';
 
 interface ScheduleCalendarProps {
   selectedDate: Date;

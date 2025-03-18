@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Calendar } from 'lucide-react';
+import { Menu, X, Calendar, Zap } from 'lucide-react';
 import AuthButton from './AuthButton';
 
 const Navbar = () => {
@@ -29,7 +29,8 @@ const Navbar = () => {
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'AI Assistant', path: '/chat' },
     { name: 'Knowledge Base', path: '/knowledge' },
-    { name: 'Maintenance', path: '/maintenance', icon: Calendar }
+    { name: 'Maintenance', path: '/maintenance', icon: Calendar },
+    { name: 'Energy', path: '/energy', icon: Zap }
   ];
 
   return (

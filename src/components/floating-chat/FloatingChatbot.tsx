@@ -2,7 +2,7 @@
 import { useRef, useEffect } from 'react';
 import { useFloatingChat } from '@/contexts/FloatingChatContext';
 import { Button } from '@/components/ui/button';
-import { Bot, X, Minus, Maximize, RefreshCcw } from 'lucide-react';
+import { Bot, X, Minus, Maximize, RefreshCcw, Move } from 'lucide-react';
 import { UserAvatar } from '@/contexts/AuthContext';
 import { useAuth } from '@/contexts/AuthContext';
 import ChatInterface from '@/components/ChatInterface';
@@ -96,6 +96,12 @@ export const FloatingChatWindow = () => {
     };
   }, [isDragging, setIsDragging, setPosition, size.width]);
 
+  // Update pointer styles based on drag state
+  const handleStyles = cn(
+    "flex items-center justify-between px-4 py-2 border-b border-border bg-primary/5",
+    isDragging ? "cursor-grabbing" : "cursor-grab"
+  );
+
   if (!isOpen) return null;
 
   return (
@@ -109,14 +115,15 @@ export const FloatingChatWindow = () => {
       }}
       className={cn(
         "fixed shadow-glass glass-card rounded-lg z-50 overflow-hidden transition-all duration-200",
-        isDragging ? "cursor-grabbing opacity-80" : "cursor-grab opacity-100"
+        isDragging ? "opacity-80" : "opacity-100"
       )}
     >
       <div 
         ref={dragHandleRef}
-        className="flex items-center justify-between px-4 py-2 border-b border-border bg-primary/5 cursor-grab"
+        className={handleStyles}
       >
         <div className="flex items-center gap-2">
+          <Move size={16} className="mr-1 text-muted-foreground" />
           {user && <UserAvatar user={user} />}
           <div>
             <p className="text-sm font-medium">AI Assistant</p>

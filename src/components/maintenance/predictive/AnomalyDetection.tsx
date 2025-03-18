@@ -10,19 +10,10 @@ import {
   Vibrate,
 } from 'lucide-react';
 import { 
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  Legend
-} from 'recharts';
-import { 
   fetchPredictiveMaintenanceAlerts,
   PredictiveMaintenance
 } from '@/utils/maintenance';
+import AnomalyChart from './charts/AnomalyChart';
 
 const AnomalyDetection = () => {
   const [activeAlert, setActiveAlert] = useState<PredictiveMaintenance | null>(null);
@@ -63,49 +54,9 @@ const AnomalyDetection = () => {
                 </Button>
               </div>
               
-              <ResponsiveContainer width="100%" height="80%">
-                <LineChart
-                  data={activeAlert.sensorData[0]?.dataPoints.slice(0, 12).reverse()}
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis 
-                    dataKey="timestamp" 
-                    tickFormatter={(value) => {
-                      const date = new Date(value);
-                      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    }}
-                  />
-                  <YAxis />
-                  <Tooltip 
-                    labelFormatter={(value) => {
-                      const date = new Date(value);
-                      return date.toLocaleString();
-                    }}
-                  />
-                  <Legend />
-                  <Line 
-                    type="monotone" 
-                    dataKey="value" 
-                    stroke="hsl(var(--primary))" 
-                    activeDot={{ r: 8 }}
-                    name="Actual"
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="predicted" 
-                    stroke="hsl(var(--muted-foreground))" 
-                    strokeDasharray="3 3" 
-                    name="Normal Range"
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="threshold" 
-                    stroke="hsl(var(--destructive))" 
-                    name="Threshold"
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+              <AnomalyChart 
+                data={activeAlert.sensorData[0]?.dataPoints || []} 
+              />
             </div>
           ) : (
             <div className="h-full flex flex-col">

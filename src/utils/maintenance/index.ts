@@ -8,4 +8,3 @@ export * from './historyUtils';
 export * from './kanbanUtils';
 export * from './thermalPowerUtils';
 export * from './predictiveMaintenanceUtils';
-

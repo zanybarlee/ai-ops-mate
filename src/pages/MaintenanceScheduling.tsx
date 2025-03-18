@@ -9,6 +9,7 @@ import MaintenanceHistory from '@/components/maintenance/MaintenanceHistory';
 import MaintenanceKanban from '@/components/maintenance/MaintenanceKanban';
 import PredictiveMaintenanceDashboard from '@/components/maintenance/PredictiveMaintenanceDashboard';
 import AiPoweredDcim from '@/components/maintenance/dcim/AiPoweredDcim';
+import { RoboticsAndIoTAutomation } from '@/components/maintenance';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
@@ -55,6 +56,7 @@ const MaintenanceScheduling = () => {
                 <TabsTrigger value="equipment">Equipment</TabsTrigger>
                 <TabsTrigger value="predictive">Predictive Maintenance</TabsTrigger>
                 <TabsTrigger value="ai-dcim">AI-Powered DCIM</TabsTrigger>
+                <TabsTrigger value="robotics">Robotics & Automation</TabsTrigger>
                 <TabsTrigger value="history">History</TabsTrigger>
               </TabsList>
               
@@ -80,6 +82,10 @@ const MaintenanceScheduling = () => {
               
               <TabsContent value="ai-dcim" className="animate-fade-in">
                 <AiPoweredDcim />
+              </TabsContent>
+              
+              <TabsContent value="robotics" className="animate-fade-in">
+                <RoboticsAndIoTAutomation />
               </TabsContent>
               
               <TabsContent value="history" className="animate-fade-in">

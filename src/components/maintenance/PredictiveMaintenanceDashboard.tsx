@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import MaintenanceAlert from './MaintenanceAlert';
 import PredictiveMaintenanceOverview from './PredictiveMaintenanceOverview';
 import IoTSensorsNetwork from './IoTSensorsNetwork';
-import { RoboticsAndIoTAutomation } from './index';
 import { BarChart3, ListFilter, Download } from 'lucide-react';
 
 const PredictiveMaintenanceDashboard = () => {
@@ -26,7 +25,6 @@ const PredictiveMaintenanceDashboard = () => {
             <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="sensors">IoT Sensors</TabsTrigger>
-              <TabsTrigger value="robotics">Robotics & Automation</TabsTrigger>
             </TabsList>
             
             <div className="space-x-2">
@@ -51,10 +49,6 @@ const PredictiveMaintenanceDashboard = () => {
           
           <TabsContent value="sensors" className="mt-6">
             <IoTSensorsNetwork />
-          </TabsContent>
-          
-          <TabsContent value="robotics" className="mt-6">
-            <RoboticsAndIoTAutomation />
           </TabsContent>
         </Tabs>
       </div>
